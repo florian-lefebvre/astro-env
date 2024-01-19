@@ -1,4 +1,4 @@
-- [ ] DELETE_ME.md
+- [x] DELETE_ME.md
 - [ ] content
 - [ ] docs
 - [ ] publish
