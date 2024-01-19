@@ -1,5 +1,5 @@
-import { extname, dirname } from "node:path";
 import { access, mkdir } from "node:fs/promises";
+import { dirname, extname } from "node:path";
 
 export const ensureDirExists = async (p: string) => {
 	const dir = extname(p) === "" ? p : dirname(p);

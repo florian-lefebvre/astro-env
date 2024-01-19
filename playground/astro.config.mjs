@@ -10,9 +10,9 @@ export default defineConfig({
 		astroEnv({
 			schema: z.object({
 				ABC: z.string(),
-				DEF: z.string()
+				DEF: z.string(),
 			}),
-			generateEnvTemplate: true
+			generateEnvTemplate: true,
 		}),
 	],
 });

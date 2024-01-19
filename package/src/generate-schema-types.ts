@@ -1,10 +1,10 @@
-import { createTypeAlias, printNode, zodToTs } from "zod-to-ts";
-import type { AnyZodObject } from "astro/zod";
-import { fileURLToPath } from "node:url";
-import { writeFile, readFile } from "node:fs/promises";
-import { ensureDirExists } from "./utils";
-import type { AstroIntegrationLogger } from "astro";
+import { readFile, writeFile } from "node:fs/promises";
 import { relative } from "node:path";
+import { fileURLToPath } from "node:url";
+import type { AstroIntegrationLogger } from "astro";
+import type { AnyZodObject } from "astro/zod";
+import { createTypeAlias, printNode, zodToTs } from "zod-to-ts";
+import { ensureDirExists } from "./utils";
 
 // https://github.com/lilnasy/gratelets/blob/main/packages/typed-api/integration.ts#L71
 const injectEnvDTS = async ({

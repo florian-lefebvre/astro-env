@@ -1,9 +1,9 @@
 import type { AstroIntegration } from "astro";
-import type { Options } from "./types";
 import { loadEnv } from "vite";
-import { validateEnv } from "./validate-env";
-import { generateSchemaTypes } from "./generate-schema-types";
 import { generateEnvTemplate } from "./generate-env-template";
+import { generateSchemaTypes } from "./generate-schema-types";
+import type { Options } from "./types";
+import { validateEnv } from "./validate-env";
 
 export const integration = ({
 	schema: _schema,
