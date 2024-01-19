@@ -1,21 +1,20 @@
 {
-  "name": "package-name",
+  "name": "astro-env",
   "version": "0.0.0",
-  "description": "TODO:",
+  "description": "Validate and type your environement variables automatically using zod",
   "author": {
-    "email": "TODO:",
-    "name": "TODO:",
-    "url": "TODO:"
+    "email": "contact@florian-lefebvre.dev",
+    "name": "Florian Lefebvre",
+    "url": "https://florian-lefebvre.dev"
   },
   "license": "MIT",
   "keywords": [
     "astro-integration",
     "astro-component",
     "withastro",
-    "astro",
-    "TODO:"
+    "astro"
   ],
-  "homepage": "TODO:",
+  "homepage": "https://github.com/florian-lefebvre/astro-env",
   "publishConfig": {
     "access": "public"
   },
