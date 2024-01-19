@@ -4,10 +4,6 @@ This is an [Astro integration](https://docs.astro.build/en/guides/integrations-g
 
 ## Usage
 
-### Prerequisites
-
-TODO:
-
 ### Installation
 
 Install the integration **automatically** using the Astro CLI:
@@ -43,18 +39,59 @@ yarn add astro-env
 2. Add the integration to your astro config
 
 ```diff
-+import integration from "astro-env";
++import astroEnv from "astro-env";
 
 export default defineConfig({
   integrations: [
-+    integration(),
++    astroEnv({ ... }),
   ],
 });
 ```
 
 ### Configuration
 
-TODO:
+Here is the TypeScript type:
+
+```ts
+export type Options = {
+    schema: AnyZodObject;
+    generateTypes?: boolean;
+    generateEnvTemplate?: boolean;
+}
+```
+
+#### `schema`
+
+Zod schema used to validate your environment variables. You can import zod from `astro/zod`:
+
+```ts
+import astroEnv from "astro-env";
+import { defineConfig } from "astro/config";
+import { z } from "astro/zod";
+
+// https://astro.build/config
+export default defineConfig({
+	integrations: [
+		astroEnv({
+			schema: z.object({
+				ABC: z.string(),
+			}),
+		}),
+	],
+});
+```
+
+When using `generateTypes`, make sure that the schema doesn't contain any transform and that all values are strings (they can be `z.string().url()` for example).
+
+> Interested in supporting more data types? Open an issue!
+
+#### `generateTypes`
+
+If set to `true`, generates `.astro/astro-env.d.ts` with types based on the schema and updates `src/env.d.ts`. Defaults to `true`.
+
+#### `generateEnvTemplate`
+
+If set to `true`, generates a `.env.template` with keys based on the schema. Defaults to `false`
 
 ## Contributing
 
@@ -81,6 +118,3 @@ You can now edit files in `package`. Please note that making changes to those fi
 
 [MIT Licensed](https://github.com/florian-lefebvre/astro-env/blob/main/LICENSE). Made with ❤️ by [Florian Lefebvre](https://github.com/florian-lefebvre).
 
-## Acknowledgements
-
-TODO:
