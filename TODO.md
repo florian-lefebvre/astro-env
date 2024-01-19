@@ -1,6 +1,7 @@
 - [x] DELETE_ME.md
 - [ ] content
 - [ ] docs
+- [ ] format / lint
 - [ ] publish
 - [ ] github config
 - [ ] share

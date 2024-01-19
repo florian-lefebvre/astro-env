@@ -11,6 +11,7 @@ export default defineConfig({
 			schema: z.object({
 				ABC: z.string(),
 			}),
+			generateEnvTemplate: true
 		}),
 	],
 });
