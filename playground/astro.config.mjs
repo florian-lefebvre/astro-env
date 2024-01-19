@@ -1,13 +1,16 @@
 import tailwind from "@astrojs/tailwind";
-import astroTailwindConfigViewer from "astro-tailwind-config-viewer";
+import astroEnv from "astro-env";
 import { defineConfig } from "astro/config";
+import { z } from "astro/zod";
 
 // https://astro.build/config
 export default defineConfig({
 	integrations: [
 		tailwind(),
-		astroTailwindConfigViewer({
-			viewer: true,
+		astroEnv({
+			schema: z.object({
+				ABC: z.string(),
+			}),
 		}),
 	],
 });

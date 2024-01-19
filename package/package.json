@@ -26,5 +26,8 @@
   "type": "module",
   "peerDependencies": {
     "astro": "^4.0.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.12"
   }
 }
