@@ -63,7 +63,7 @@ export const generateSchemaTypes = async ({
 	logger: AstroIntegrationLogger;
 	schema: AnyZodObject;
 }) => {
-	const identifier = "_AstroEnvSchema";
+	const identifier = "AstroEnvSchema";
 	const { node } = zodToTs(schema, identifier);
 	const typeAlias = createTypeAlias(node, identifier);
 	const nodeString = printNode(typeAlias);
@@ -72,12 +72,10 @@ export const generateSchemaTypes = async ({
 	const filePath = fileURLToPath(dtsURL);
 	const fileContent = `${nodeString}
 
-type AstroEnvSchema = Readonly<${identifier}>
+type AstroEnv = Readonly<${identifier}>
 
-interface ImportMetaEnv extends AstroEnvSchema {}
-
-interface ImportMeta {
-    readonly env: ImportMetaEnv;
+declare module "env:astro" {
+	export const env: AstroEnv;
 }`;
 
 	await ensureDirExists(filePath);

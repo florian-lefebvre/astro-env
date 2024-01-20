@@ -4,6 +4,8 @@ import { generateEnvTemplate } from "./generate-env-template";
 import { generateSchemaTypes } from "./generate-schema-types";
 import type { Options } from "./types";
 import { validateEnv } from "./validate-env";
+import { z } from "astro/zod";
+import { virtualImportsPlugin } from "./virtual-imports";
 
 export const integration = ({
 	schema: _schema,
@@ -11,7 +13,14 @@ export const integration = ({
 	generateEnvTemplate: _generateEnvTemplate = false,
 }: Options): AstroIntegration => {
 	const options = {
-		schema: _schema,
+		schema: z.object(
+			_schema({
+				string: z.string,
+				number: z.coerce.number,
+				boolean: z.coerce.boolean,
+				date: z.coerce.date,
+			}),
+		),
 		generateTypes: _generateTypes,
 		generateEnvTemplate: _generateEnvTemplate,
 	};
@@ -19,7 +28,7 @@ export const integration = ({
 	return {
 		name: "astro-env",
 		hooks: {
-			"astro:config:setup": ({ command, logger }) => {
+			"astro:config:setup": ({ command, logger, updateConfig }) => {
 				validateEnv({
 					schema: options.schema,
 					command,
@@ -29,6 +38,12 @@ export const integration = ({
 						process.cwd(),
 						"",
 					),
+				});
+
+				updateConfig({
+					vite: {
+						plugins: [virtualImportsPlugin({ schema: options.schema })],
+					},
 				});
 			},
 			"astro:config:done": async ({ config, logger }) => {

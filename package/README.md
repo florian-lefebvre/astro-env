@@ -48,13 +48,24 @@ export default defineConfig({
 });
 ```
 
+You can then import the `env` object:
+
+```ts
+import { env } from "env:astro";
+```
+
 ### Configuration
 
 Here is the TypeScript type:
 
 ```ts
 export type Options = {
-    schema: AnyZodObject;
+	schema: <T extends Record<string, any>>(args: {
+		string: () => z.ZodString;
+		number: () => z.ZodNumber;
+		boolean: () => z.ZodBoolean;
+		date: () => z.ZodDate;
+	}) => T;
     generateTypes?: boolean;
     generateEnvTemplate?: boolean;
 }
@@ -62,7 +73,7 @@ export type Options = {
 
 #### `schema`
 
-Zod schema used to validate your environment variables. You can import zod from `astro/zod`:
+Schema used to validate your environment variables. It supports a subset of zod built-in schemas: `string`, `number`, `boolean` and `date`.
 
 ```ts
 import astroEnv from "astro-env";
@@ -73,15 +84,15 @@ import { z } from "astro/zod";
 export default defineConfig({
 	integrations: [
 		astroEnv({
-			schema: z.object({
-				ABC: z.string(),
+			schema: ({ string, number }) => ({
+				HOST: string().url(),
+				PORT: number().max(9000),
+				QTY: number().transform((val) => val * 2),
 			}),
 		}),
 	],
 });
 ```
-
-When using `generateTypes`, make sure that the schema doesn't contain any transform and that all values are strings (they can be `z.string().url()` for example).
 
 > Interested in supporting more data types? Open an issue!
 
