@@ -12,18 +12,19 @@ export const virtualImportsPlugin = ({
 	schema: AnyZodObject;
 }): Plugin => {
 	const modules: Record<string, string> = {
-		// TODO: Cannot find module 'json-schema-to-zod' imported from 'env:astro'
-		"env:astro": `import { jsonSchemaToZod } from "json-schema-to-zod";
+		"env:astro": `import { z as zImport } from "astro/zod";
+import { jsonSchemaToZod } from "astro-env/deps";
 
 const jsonSchema = ${JSON.stringify(zodToJsonSchema(schema))};
 
-const schema = jsonSchemaToZod(jsonSchema, { module: "esm" });
+const z = zImport;
+const schema = eval(jsonSchemaToZod(jsonSchema));
 
 export const env = {
     ${Object.keys(schema.shape)
-			.map((key) => `${key}:schema.shape[key].parse(import.meta.env.${key})`)
+			.map((key) => `${key}:schema.shape.${key}.parse(import.meta.env.${key})`)
 			.join(",\n")}
-    };`,
+};`,
 	};
 
 	/** Mapping names prefixed with `\0` to their original form. */
