@@ -72,9 +72,9 @@ export const generateSchemaTypes = async ({
 	const filePath = fileURLToPath(dtsURL);
 	const fileContent = `${nodeString}
 
-type AstroEnv = Readonly<${identifier}>
-
 declare module "env:astro" {
+	export type AstroEnv = Readonly<${identifier}>;
+
 	export const env: AstroEnv;
 }`;
 
