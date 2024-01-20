@@ -18,7 +18,7 @@ import { jsonSchemaToZod } from "astro-env/deps";
 const jsonSchema = ${JSON.stringify(zodToJsonSchema(schema))};
 
 const z = zImport;
-const schema = eval(jsonSchemaToZod(jsonSchema));
+const schema = eval(jsonSchemaToZod(jsonSchema).replace("}).strict()", "}).partial()"));
 
 export const env = {
     ${Object.keys(schema.shape)
