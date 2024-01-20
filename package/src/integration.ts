@@ -1,10 +1,10 @@
 import type { AstroIntegration } from "astro";
+import { z } from "astro/zod";
 import { loadEnv } from "vite";
 import { generateEnvTemplate } from "./generate-env-template";
 import { generateSchemaTypes } from "./generate-schema-types";
 import type { Options } from "./types";
 import { validateEnv } from "./validate-env";
-import { z } from "astro/zod";
 import { virtualImportsPlugin } from "./virtual-imports";
 
 export const integration = ({

@@ -1,1 +1,1 @@
-export { jsonSchemaToZod } from "json-schema-to-zod"
+export { jsonSchemaToZod } from "json-schema-to-zod";

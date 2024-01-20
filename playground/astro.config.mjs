@@ -9,7 +9,7 @@ export default defineConfig({
 		astroEnv({
 			schema: ({ string, number }) => ({
 				ABC: string(),
-				DEF: number()
+				DEF: number(),
 			}),
 			generateEnvTemplate: true,
 		}),
