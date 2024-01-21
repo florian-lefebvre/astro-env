@@ -1,4 +1,5 @@
 import type { AstroIntegration } from "astro";
+import { createResolver, watchIntegration } from "astro-integration-kit";
 import { loadEnv } from "vite";
 import { generateEnvTemplate } from "./generate-env-template";
 import { generateSchemaTypes } from "./generate-schema-types";
@@ -16,10 +17,24 @@ export const integration = ({
 		generateEnvTemplate: _generateEnvTemplate,
 	};
 
+	const { resolve } = createResolver(import.meta.url);
+
 	return {
 		name: "astro-env",
 		hooks: {
-			"astro:config:setup": ({ command, logger }) => {
+			"astro:config:setup": ({
+				addWatchFile,
+				command,
+				logger,
+				updateConfig,
+			}) => {
+				watchIntegration({
+					addWatchFile,
+					command,
+					dir: resolve(),
+					updateConfig,
+				});
+
 				validateEnv({
 					schema: options.schema,
 					command,
