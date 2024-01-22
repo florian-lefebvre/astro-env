@@ -1,10 +1,10 @@
 import type { AstroIntegration } from "astro";
 import { createResolver, watchIntegration } from "astro-integration-kit";
 import { loadEnv } from "vite";
-import { generateEnvTemplate } from "./generate-env-template";
-import { generateSchemaTypes } from "./generate-schema-types";
-import type { Options } from "./types";
-import { validateEnv } from "./validate-env";
+import { generateEnvTemplate } from "./generate-env-template.js";
+import { generateSchemaTypes } from "./generate-schema-types.js";
+import type { Options } from "./types.js";
+import { validateEnv } from "./validate-env.js";
 
 export const integration = ({
 	schema: _schema,
