@@ -1,5 +1,11 @@
 # astro-env
 
+## 0.0.3
+
+### Patch Changes
+
+- 1d8521a: Move zod-to-ts from devDependencies to dependencies
+
 ## 0.0.2
 
 ### Patch Changes
