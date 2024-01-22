@@ -29,10 +29,10 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
-    "vite": "^5.0.12",
-    "zod-to-ts": "^1.2.0"
+    "vite": "^5.0.12"
   },
   "dependencies": {
-    "astro-integration-kit": "^0.0.2"
+    "astro-integration-kit": "^0.0.2",
+    "zod-to-ts": "^1.2.0"
   }
 }

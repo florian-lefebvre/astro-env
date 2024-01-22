@@ -23,6 +23,9 @@ importers:
       astro-integration-kit:
         specifier: ^0.0.2
         version: 0.0.2(astro@4.1.2)
+      zod-to-ts:
+        specifier: ^1.2.0
+        version: 1.2.0(typescript@5.3.3)(zod@3.22.4)
     devDependencies:
       '@types/node':
         specifier: ^20.11.0
@@ -30,9 +33,6 @@ importers:
       vite:
         specifier: ^5.0.12
         version: 5.0.12(@types/node@20.11.0)
-      zod-to-ts:
-        specifier: ^1.2.0
-        version: 1.2.0(typescript@5.3.3)(zod@3.22.4)
 
   playground:
     dependencies:
@@ -4736,6 +4736,7 @@ packages:
     resolution: {integrity: sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==}
     engines: {node: '>=14.17'}
     hasBin: true
+    dev: false
 
   /unbox-primitive@1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}
@@ -5191,10 +5192,11 @@ packages:
     dependencies:
       typescript: 5.3.3
       zod: 3.22.4
-    dev: true
+    dev: false
 
   /zod@3.22.4:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+    dev: false
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
