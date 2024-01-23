@@ -15,7 +15,7 @@ export const generateEnvTemplate = async ({
 	const keys = Object.keys(schema.shape);
 
 	const filePath = fileURLToPath(new URL(".env.template", root));
-	const fileContent = keys.map((key) => `${key}=\n`).join();
+	const fileContent = keys.map((key) => `${key}=\n`).join("");
 
 	await writeFile(filePath, fileContent);
 	logger.info("Generated .env.template");
