@@ -1,5 +1,11 @@
 # astro-env
 
+## 0.0.5
+
+### Patch Changes
+
+- 76b470f: Fixes `.env.template` generation
+
 ## 0.0.4
 
 ### Patch Changes
