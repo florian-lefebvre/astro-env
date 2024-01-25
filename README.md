@@ -1,6 +1,6 @@
 # astro-env
 
-`astro-env` is an integration that allows you to validate and type your environement variables automatically using zod.
+`astro-env` is an integration that allows you to validate and type your environment variables automatically using zod.
 
 To see how to get started, check out the [package README](./package/README.md)
 

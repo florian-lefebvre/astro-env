@@ -1,36 +1,42 @@
-import type { AstroIntegration } from "astro";
+import { createResolver, defineIntegration } from "astro-integration-kit";
 import { z } from "astro/zod";
 import { loadEnv } from "vite";
-import { generateEnvTemplate } from "./generate-env-template";
-import { generateSchemaTypes } from "./generate-schema-types";
-import type { Options } from "./types";
-import { validateEnv } from "./validate-env";
-import { virtualImportsPlugin } from "./virtual-imports";
+import zodToJsonSchema from "zod-to-json-schema";
+import { generateEnvTemplate } from "./generate-env-template.js";
+import { generateSchemaTypes } from "./generate-schema-types.js";
+import type { Options } from "./types.js";
+import { validateEnv } from "./validate-env.js";
 
-export const integration = ({
-	schema: _schema,
-	generateTypes: _generateTypes = true,
-	generateEnvTemplate: _generateEnvTemplate = false,
-}: Options): AstroIntegration => {
-	const options = {
-		schema: z.object(
-			_schema({
+export const integration = defineIntegration<Options>({
+	name: "astro-env",
+	// @ts-ignore
+	defaults: {
+		generateTypes: true,
+		generateEnvTemplate: false,
+	},
+	setup({ options }) {
+		const { resolve } = createResolver(import.meta.url);
+		const schema = z.object(
+			options.schema({
 				string: z.string,
 				number: z.coerce.number,
 				boolean: z.coerce.boolean,
 				date: z.coerce.date,
 			}),
-		),
-		generateTypes: _generateTypes,
-		generateEnvTemplate: _generateEnvTemplate,
-	};
+		);
 
-	return {
-		name: "astro-env",
-		hooks: {
-			"astro:config:setup": ({ command, logger, updateConfig }) => {
+		return {
+			"astro:config:setup": async ({
+				addVirtualImport,
+				command,
+				config,
+				logger,
+				watchIntegration,
+			}) => {
+				watchIntegration(resolve());
+
 				validateEnv({
-					schema: options.schema,
+					schema,
 					command,
 					logger,
 					env: loadEnv(
@@ -40,29 +46,39 @@ export const integration = ({
 					),
 				});
 
-				updateConfig({
-					vite: {
-						plugins: [virtualImportsPlugin({ schema: options.schema })],
-					},
+				addVirtualImport({
+					name: "env:astro",
+					content: `import { z as zImport } from "astro/zod";
+import { jsonSchemaToZod } from "astro-env/deps";
+
+const jsonSchema = ${JSON.stringify(zodToJsonSchema(schema))};
+
+const z = zImport;
+const schema = eval(jsonSchemaToZod(jsonSchema).replace("}).strict()", "}).partial()"));
+
+export const env = {
+    ${Object.keys(schema.shape)
+			.map((key) => `${key}:schema.shape.${key}.parse(import.meta.env.${key})`)
+			.join(",\n")}
+};`,
 				});
-			},
-			"astro:config:done": async ({ config, logger }) => {
+
 				if (options.generateTypes) {
 					await generateSchemaTypes({
 						root: config.root,
 						srcDir: config.srcDir,
 						logger,
-						schema: options.schema,
+						schema,
 					});
 				}
 				if (options.generateEnvTemplate) {
 					await generateEnvTemplate({
 						root: config.root,
 						logger,
-						schema: options.schema,
+						schema,
 					});
 				}
 			},
-		},
-	};
-};
+		};
+	},
+});

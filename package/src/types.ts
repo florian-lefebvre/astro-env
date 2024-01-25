@@ -16,12 +16,12 @@ export type Options = {
 	 *
 	 * @default true
 	 */
-	generateTypes?: boolean;
+	generateTypes?: boolean | undefined;
 	/**
 	 * If set to `true`, generates a `.env.template` with keys based
 	 * on {schema}.
 	 *
 	 * @default false
 	 */
-	generateEnvTemplate?: boolean;
+	generateEnvTemplate?: boolean | undefined;
 };

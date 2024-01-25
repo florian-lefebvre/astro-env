@@ -30,6 +30,8 @@ export const validateEnv = ({
 				`The following environment variables are invalid: ${vars.join(", ")}`,
 			);
 		}
+	} else {
+		logger.info("All environment variables are valid");
 	}
 
 	return result;

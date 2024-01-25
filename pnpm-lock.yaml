@@ -20,12 +20,18 @@ importers:
       astro:
         specifier: ^4.0.0
         version: 4.1.2(@types/node@20.11.0)(typescript@5.3.3)
+      astro-integration-kit:
+        specifier: ^0.0.8
+        version: 0.0.8(astro@4.1.2)
       json-schema-to-zod:
         specifier: ^2.0.14
         version: 2.0.14
       zod-to-json-schema:
         specifier: ^3.22.3
         version: 3.22.3(zod@3.22.4)
+      zod-to-ts:
+        specifier: ^1.2.0
+        version: 1.2.0(typescript@5.3.3)(zod@3.22.4)
     devDependencies:
       '@types/node':
         specifier: ^20.11.0
@@ -33,9 +39,6 @@ importers:
       vite:
         specifier: ^5.0.11
         version: 5.0.12(@types/node@20.11.0)
-      zod-to-ts:
-        specifier: ^1.2.0
-        version: 1.2.0(typescript@5.3.3)(zod@3.22.4)
 
   playground:
     dependencies:
@@ -1352,6 +1355,16 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
+  /astro-integration-kit@0.0.8(astro@4.1.2):
+    resolution: {integrity: sha512-ECKfmCf4GmtFMp+9zvSaVd6c/QI2sFLfxzvFmsNXiJlcu/S5qAASXKBNFmG9x4CEMXu/2+HTLPiAJr3lbOGGGA==}
+    peerDependencies:
+      astro: ^4.0.0
+    dependencies:
+      astro: 4.1.2(@types/node@20.11.0)(typescript@5.3.3)
+      defu: 6.1.4
+      pathe: 1.1.2
+    dev: false
+
   /astro@4.1.2(@types/node@20.11.0)(typescript@5.3.3):
     resolution: {integrity: sha512-C/CrsIjRnRZYsLIBquAoTKj3ZPyGPVRByEcPMs6CrJLiHmcYnjpRMVd7oBFepU6772U1ZcXLy0zdxoRYjHFf5w==}
     engines: {node: '>=18.14.1', npm: '>=6.14.0'}
@@ -1917,6 +1930,10 @@ packages:
       has-property-descriptors: 1.0.1
       object-keys: 1.1.1
     dev: true
+
+  /defu@6.1.4:
+    resolution: {integrity: sha512-mEQCMmwJu317oSz8CwdIOdwf3xMif1ttiM8LTufzc3g6kR+9Pe236twL8j3IYT1F7GfRgGcW6MWxzZjLIkuHIg==}
+    dev: false
 
   /dequal@2.0.3:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
@@ -3810,6 +3827,10 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /pathe@1.1.2:
+    resolution: {integrity: sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ==}
+    dev: false
+
   /picocolors@1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
 
@@ -5470,10 +5491,11 @@ packages:
     dependencies:
       typescript: 5.3.3
       zod: 3.22.4
-    dev: true
+    dev: false
 
   /zod@3.22.4:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+    dev: false
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}

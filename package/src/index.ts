@@ -1,4 +1,4 @@
-import { integration } from "./integration";
-export * from "./types";
+import { integration } from "./integration.js";
+export * from "./types.js";
 
 export default integration;
