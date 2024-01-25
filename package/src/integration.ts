@@ -6,6 +6,7 @@ import { generateEnvTemplate } from "./generate-env-template.js";
 import { generateSchemaTypes } from "./generate-schema-types.js";
 import type { Options } from "./types.js";
 import { validateEnv } from "./validate-env.js";
+import { fileURLToPath } from "node:url";
 
 export const integration = defineIntegration<Options>({
 	name: "astro-env",
@@ -14,7 +15,7 @@ export const integration = defineIntegration<Options>({
 		generateTypes: true,
 		generateEnvTemplate: false,
 	},
-	setup({ options }) {
+	setup({ name, options }) {
 		const { resolve } = createResolver(import.meta.url);
 		const schema = z.object(
 			options.schema({
@@ -28,6 +29,7 @@ export const integration = defineIntegration<Options>({
 		return {
 			"astro:config:setup": async ({
 				addVirtualImport,
+				addVitePlugin,
 				command,
 				config,
 				logger,
@@ -62,6 +64,25 @@ export const env = {
 			.join(",\n")}
 };`,
 				});
+
+				addVitePlugin({
+					name: `vite-plugin-${name}/env-validation`,
+					async configureServer(viteServer) {
+						const entrypointPath = fileURLToPath(new URL("env", config.root));
+						const mod = await viteServer.ssrLoadModule(entrypointPath)
+				
+						if ("default" in mod && mod.default instanceof z.ZodObject) {
+							const result = mod.default.safeParse(
+								loadEnv(
+									command === "dev" ? "development" : "production",
+									process.cwd(),
+									"",
+								),
+							);
+							console.dir(result.error, { depth: null })
+						}
+					}
+				})
 
 				if (options.generateTypes) {
 					await generateSchemaTypes({
