@@ -21,8 +21,8 @@ importers:
         specifier: ^4.0.0
         version: 4.1.2(@types/node@20.11.0)(typescript@5.3.3)
       astro-integration-kit:
-        specifier: ^0.0.2
-        version: 0.0.2(astro@4.1.2)
+        specifier: ^0.3.0
+        version: 0.3.0(astro@4.1.2)
       zod-to-ts:
         specifier: ^1.2.0
         version: 1.2.0(typescript@5.3.3)(zod@3.22.4)
@@ -1209,12 +1209,13 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /astro-integration-kit@0.0.2(astro@4.1.2):
-    resolution: {integrity: sha512-QZReb4Y4svJ9kPEi/+fnSM6teFHt22omBafeXkVPKnQRjTuN+cSxLAU3RMrLcdmaLMyTXnGieu5XCPKbEUTiyg==}
+  /astro-integration-kit@0.3.0(astro@4.1.2):
+    resolution: {integrity: sha512-ZrJu50KlHM9Spl6GJzRGcPVDRNR9iokEPUaszoh38EvnwQehUe5r7mdKWVWQkvuVIl8W91O5sDUsklm1Yj10vA==}
     peerDependencies:
       astro: ^4.0.0
     dependencies:
       astro: 4.1.2(@types/node@20.11.0)(typescript@5.3.3)
+      pathe: 1.1.2
     dev: false
 
   /astro@4.1.2(@types/node@20.11.0)(typescript@5.3.3):
@@ -3654,6 +3655,10 @@ packages:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
     dev: true
+
+  /pathe@1.1.2:
+    resolution: {integrity: sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ==}
+    dev: false
 
   /picocolors@1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
