@@ -4,6 +4,7 @@ import { z } from "astro/zod";
 import { validateEnvPlugin } from "./validate-env.js";
 import { staticEnvPlugin } from "./static-env.js";
 import { dynamicEnvPlugin } from "./dynamic-env.js";
+import { AstroError } from "astro/errors";
 
 const optionsSchema = z.object({
 	/** TODO: */
@@ -49,6 +50,15 @@ export const integration = defineIntegration({
 				});
 
 				addDts({ name, content: `${staticContent}\n${dynamicContent}` });
+			},
+			"astro:server:setup": ({ server }) => {
+				// TODO: do not kill the terminal, show in the error overlay
+				server.ws.on(
+					"astro-env:get-env:invalid-variable-usage",
+					({ key }: { key: string }) => {
+						throw new AstroError(`Can't access private variable "${key}" client-side.`);
+					},
+				);
 			},
 		};
 	},
