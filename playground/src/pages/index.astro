@@ -3,8 +3,12 @@ import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
 import * as env from "env:astro/static"
 import { ABC } from "env:astro/static"
+import { getEnv } from "env:astro/dynamic"
 
 console.log({ env: Object.entries(env), ABC })
+console.log({ ABC: getEnv("ABC") })
+// TODO: investigate why it's undefined
+console.log({ ABC: process.env.ABC })
 ---
 
 <Layout title="Welcome to Astro.">
@@ -64,6 +68,11 @@ console.log({ env: Object.entries(env), ABC })
 				body="Come say hi to our amazing Discord community. ❤️"
 			/>
 		</ul>
+		<script>
+			import { getEnv } from "env:astro/dynamic"
+
+			console.log(getEnv("ABC"))
+		</script>
 	</main>
 </Layout>
 

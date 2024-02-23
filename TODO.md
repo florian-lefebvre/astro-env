@@ -1,8 +1,8 @@
 - [x] env validation
 - [x] `env:astro/static`
 - [ ] dynamic variables
-  - [ ] `getEnvEntrypoint`
-  - [ ] `env:astro/dynamic` + `getEnv`
+  - [x] `getEnvEntrypoint`
+  - [x] `env:astro/dynamic` + `getEnv`
   - [ ] `getEnv` client-side leaking protection
 - [ ] alternate schema for `variables`
 - [ ] testing
