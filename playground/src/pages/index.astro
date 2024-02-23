@@ -1,6 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
+import * as env from "env:astro/static"
+import { ABC } from "env:astro/static"
+
+console.log({ env: Object.entries(env), ABC })
 ---
 
 <Layout title="Welcome to Astro.">

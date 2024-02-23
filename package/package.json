@@ -20,7 +20,7 @@
   },
   "sideEffects": false,
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./temp/index.ts"
   },
   "scripts": {},
   "type": "module",

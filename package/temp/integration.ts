@@ -3,6 +3,8 @@ import { corePlugins } from "astro-integration-kit/plugins";
 import { z } from "astro/zod";
 import { loadEnv } from "vite";
 
+const STATIC_VIRTUAL_MODULE_NAME = "env:astro/static";
+
 export const integration = defineIntegration({
 	name: "astro-env",
 	plugins: [...corePlugins],
@@ -16,7 +18,13 @@ export const integration = defineIntegration({
 		const { resolve } = createResolver(import.meta.url);
 
 		return {
-			"astro:config:setup": ({ command, watchIntegration, logger }) => {
+			"astro:config:setup": ({
+				addDts,
+				addVirtualImport,
+				command,
+				logger,
+				watchIntegration,
+			}) => {
 				watchIntegration(resolve());
 
 				const env = loadEnv(
@@ -41,6 +49,20 @@ export const integration = defineIntegration({
 						throw new Error(message);
 					}
 				}
+
+				addVirtualImport({
+					name: STATIC_VIRTUAL_MODULE_NAME,
+					content: options.variables
+						.map((v) => `export const ${v} = import.meta.env["${v}"];`)
+						.join("\n"),
+				});
+
+				addDts({
+					name: "astro-env",
+					content: `declare module "${STATIC_VIRTUAL_MODULE_NAME}" {
+${options.variables.map((v) => `export const ${v}: string;`).join("\n")}
+}`,
+				});
 			},
 		};
 	},

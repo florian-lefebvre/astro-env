@@ -1,5 +1,5 @@
 - [x] env validation
-- [ ] `env:astro/static`
+- [x] `env:astro/static`
 - [ ] dynamic variables
   - [ ] `getEnvEntrypoint`
   - [ ] `env:astro/dynamic` + `getEnv`
