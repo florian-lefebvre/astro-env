@@ -2,6 +2,10 @@
 - [x] `env:astro/static`
 - [x] dynamic variables using `Astro.locals.env`
 - [ ] Schema for `variables`
+  - [ ] string
+  - [ ] number
+  - [ ] boolean
+  - [ ] enum
 - [ ] testing
 - [ ] docs update
 
