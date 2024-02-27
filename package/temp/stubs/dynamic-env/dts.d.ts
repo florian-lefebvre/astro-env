@@ -1,3 +1,5 @@
-declare module "env:astro/dynamic" {
-	export const getEnv: (key: string) => string;
+declare namespace App {
+	interface Locals {
+		env: Record<string, string>
+	}
 }

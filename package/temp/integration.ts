@@ -11,8 +11,8 @@ const optionsSchema = z.object({
 	variables: z.array(z.string()),
 	/** TODO: */
 	validationLevel: z.enum(["warn", "error"]).optional().default("warn"),
-	/** TODO */
-	entrypoint: z.string().optional(),
+	/** TODO: */
+	runtime: z.enum(["node", "deno", "cloudflare", "bun"]).optional(),
 });
 
 export type Options = z.infer<typeof optionsSchema>;
@@ -44,10 +44,7 @@ export const integration = defineIntegration({
 					name: "env:astro/static",
 					variables: options.variables,
 				});
-				const dynamicContent = dynamicEnv({
-					name: "env:astro/dynamic",
-					entrypoint: options.entrypoint,
-				});
+				const dynamicContent = dynamicEnv({ runtime: options.runtime });
 
 				addDts({ name, content: `${staticContent}\n${dynamicContent}` });
 			},
@@ -56,7 +53,9 @@ export const integration = defineIntegration({
 				server.ws.on(
 					"astro-env:get-env:invalid-variable-usage",
 					({ key }: { key: string }) => {
-						throw new AstroError(`Can't access private variable "${key}" client-side.`);
+						throw new AstroError(
+							`Can't access private variable "${key}" client-side.`,
+						);
 					},
 				);
 			},

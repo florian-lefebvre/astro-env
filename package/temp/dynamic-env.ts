@@ -1,86 +1,57 @@
+import type { HookParameters } from "astro";
 import { createResolver, definePlugin } from "astro-integration-kit";
-import type { Plugin as VitePlugin } from "vite";
-import type { Options } from "./integration.js";
 import {
-	addDts,
 	addVirtualImport,
-	addVitePlugin,
+	hasIntegration,
 } from "astro-integration-kit/utilities";
-import { resolve } from "node:path";
 import { readFileSync } from "node:fs";
+import type { Options } from "./integration.js";
 
-function virtualEntrypoint(
-	options: { name: string } & Pick<Options, "entrypoint">,
-): VitePlugin {
-	const virtualModuleId = `virtual:${options.name}/entrypoint`;
-	const resolvedVirtualModuleId = `\0${virtualModuleId}`;
+type Runtime = Required<Options>["runtime"];
 
-	let isBuild: boolean;
-	let root: string;
-	let entrypoint: string | undefined;
+const getRuntime = (
+	config: HookParameters<"astro:config:setup">["config"],
+): Runtime => {
+	const check = (name: string) =>
+		hasIntegration({
+			name,
+			config,
+		});
 
-	return {
-		name: `${options.name}/entrypoint`,
-		config(_, { command }) {
-			isBuild = command === "build";
-		},
-		configResolved(config) {
-			root = config.root;
-			if (options.entrypoint) {
-				entrypoint = options.entrypoint.startsWith(".")
-					? resolve(root, options.entrypoint)
-					: options.entrypoint;
-			}
-		},
-		resolveId(id) {
-			if (id === virtualModuleId) {
-				return resolvedVirtualModuleId;
-			}
-		},
-		load(id) {
-			if (id === resolvedVirtualModuleId) {
-				if (entrypoint) {
-					const message = `"[${options.name}] entrypoint \`${JSON.stringify(
-						entrypoint,
-					)}\` does not export a default function."`;
-
-					return `\
-import * as mod from ${JSON.stringify(entrypoint)};
-
-export const getEnvVariable = (key) => {
-    if ("default" in mod) {
-        return mod.default(key);
-    } else {
-        ${isBuild ? `throw new Error(${message})` : `console.warn(${message})`};
-    }
-}`;
-				}
-				return "export const getEnvVariable = (key) => process.env[key];";
-			}
-		},
-	};
-}
+	if (check("@astrojs/cloudflare")) {
+		return "cloudflare";
+	}
+	if (check("@astrojs/deno")) {
+		return "deno";
+	}
+	if (check("astro-bun-adapter")) {
+		return "bun";
+	}
+	return "node";
+};
 
 export const dynamicEnvPlugin = definePlugin({
 	name: "dynamicEnv",
 	hook: "astro:config:setup",
 	implementation:
-		({ updateConfig }, { name: integrationName }) =>
-		({ entrypoint, name }: { name: string } & Pick<Options, "entrypoint">) => {
+		({ config, updateConfig, addMiddleware }) =>
+		({ runtime: providedRuntime }: { runtime?: Runtime }) => {
 			const { resolve } = createResolver(import.meta.url);
 
-			addVitePlugin({
-				updateConfig,
-				plugin: virtualEntrypoint({ entrypoint, name: integrationName }),
-			});
+			const runtime = providedRuntime ?? getRuntime(config);
 
 			addVirtualImport({
 				updateConfig,
-				name,
+				name: "virtual:astro-env/entrypoint",
 				content: readFileSync(
-					resolve("./stubs/dynamic-env/virtual-import.mjs"),
+					resolve(`./stubs/dynamic-env/${runtime}.mjs`),
 					"utf-8",
 				),
+			});
+
+			addMiddleware({
+				entrypoint: resolve("./middleware.ts"),
+				order: "pre",
 			});
 
 			const content = readFileSync(
