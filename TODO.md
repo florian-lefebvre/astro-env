@@ -4,7 +4,7 @@
 - [x] Schema for `variables`
 - [x] testing
 - [x] jsdoc
-- [ ] docs update
+- [x] docs update
 - [ ] changeset (+ migration)
 - [ ] pr desc
 - [ ] remove todo

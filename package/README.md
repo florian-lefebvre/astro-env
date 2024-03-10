@@ -48,50 +48,111 @@ export default defineConfig({
 });
 ```
 
+### How to use?
+
+TODO:
+
 ### Configuration
 
 Here is the TypeScript type:
 
 ```ts
 export type Options = {
-    schema: AnyZodObject;
-    generateTypes?: boolean;
-    generateEnvTemplate?: boolean;
+    variables: (fields: Fields) => Schema;
+    validationLevel?: "warn" | "error";
+    runtime?: "node" | "deno" | "cloudflare" | "bun";
 }
 ```
 
-#### `schema`
+#### `variables`
 
-Zod schema used to validate your environment variables. You can import zod from `astro/zod`:
+Allows you to define a schema to validate your environment variables at runtime. Types will be inferred based on those.
 
 ```ts
-import astroEnv from "astro-env";
 import { defineConfig } from "astro/config";
-import { z } from "astro/zod";
+import env from "astro-env";
 
-// https://astro.build/config
 export default defineConfig({
 	integrations: [
-		astroEnv({
-			schema: z.object({
-				ABC: z.string(),
-			}),
-		}),
-	],
-});
+		env({
+			variables: (fields) => ({
+				PROD_URL: fields.string({
+					url: true
+				}),
+				MODE: fields.enum({
+					values: ["dev", "prod"],
+					optional: true,
+					default: "dev"
+				}),
+				PORT: fields.number({
+					gte: 2000,
+					lte: 5000,
+					optional: true,
+					default: 4321
+				}),
+				SHOW_OVERLAY: fields.boolean({
+					optional: true,
+					default: false
+				})
+			})
+		})
+	]
+})
 ```
 
-When using `generateTypes`, make sure that the schema doesn't contain any transform and that all values are strings (they can be `z.string().url()` for example).
+#### `validationLevel`
 
-> Interested in supporting more data types? Open an issue!
+Specifies if running the app (not matter the mode) should warn or fail if provided variables are invalid. Defaults to `"warn"`.
 
-#### `generateTypes`
+```ts
+import { defineConfig } from "astro/config";
+import env from "astro-env";
 
-If set to `true`, generates `.astro/astro-env.d.ts` with types based on the schema and updates `src/env.d.ts`. Defaults to `true`.
+export default defineConfig({
+	integrations: [
+		env({
+			// ...
+			validationLevel: "error"
+		})
+	]
+})
+```
+
+### `runtime`
+
+Changes how dynamic environment varriables are retrieved at runtime. The value depends on the adapter being used but fallbacks to `"node"`. You can override it if you're using another runtime without its corresponding adapter.
+
+```ts
+import { defineConfig } from "astro/config";
+import env from "astro-env";
+
+export default defineConfig({
+	integrations: [
+		env({
+			// ...
+			runtime: "bun"
+		})
+	]
+})
+```
 
 #### `generateEnvTemplate`
 
-If set to `true`, generates a `.env.template` with keys based on the schema. Defaults to `false`
+Generates a `.env.template` with the `variables` returned object keys if enabled. Defaults to `false`.
+
+```ts
+import { defineConfig } from "astro/config";
+import env from "astro-env";
+
+export default defineConfig({
+	integrations: [
+		env({
+			// ...
+			generateEnvTemplate: true
+		})
+	]
+})
+```
 
 ## Contributing
 

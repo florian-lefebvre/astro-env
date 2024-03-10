@@ -6,6 +6,7 @@ import { staticEnvPlugin } from "./static-env.js";
 import { dynamicEnvPlugin } from "./dynamic-env.js";
 import { AstroError } from "astro/errors";
 import * as validators from "./validators/index.js";
+import { generateEnvTemplate } from "./generate-env-template.js";
 
 export const variablesSchemaReturns = z.record(
 	z.union([
@@ -37,18 +38,25 @@ const optionsSchema = z.object({
 	/**
 	 * @description Specifies if running the app (not matter the mode) should warn or
 	 * fail if provided variables are invalid.
-	 * 
+	 *
 	 * @default `"warn"`
 	 */
 	validationLevel: z.enum(["warn", "error"]).optional().default("warn"),
 	/**
 	 * @description Changes how dynamic environment varriables are retrieved at runtime.
-	 * The value depends on the adapter being used but fallback to node. You can override
+	 * The value depends on the adapter being used but fallbacks to `"node"`. You can override
 	 * it if you're using another runtime without its corresponding adapter.
-	 * 
+	 *
 	 * @default `"node"`
 	 */
 	runtime: z.enum(["node", "deno", "cloudflare", "bun"]).optional(),
+	/**
+	 * @description Generates a `.env.template` with the {variables} returned object keys
+	 * if enabled.
+	 *
+	 * @default `false`
+	 */
+	generateEnvTemplate: z.boolean().optional().default(false),
 });
 
 export type Options = z.infer<typeof optionsSchema>;
@@ -67,6 +75,8 @@ export const integration = defineIntegration({
 
 		return {
 			"astro:config:setup": ({
+				config,
+				logger,
 				addDts,
 				watchIntegration,
 				validateEnv,
@@ -80,6 +90,14 @@ export const integration = defineIntegration({
 					name: "env:astro/static",
 					variables,
 				});
+				if (options.generateEnvTemplate) {
+					generateEnvTemplate({
+						root: config.root,
+						keys: Object.keys(variables),
+						logger,
+					});
+				}
+
 				const dynamicContent = dynamicEnv({ runtime: options.runtime });
 
 				addDts({ name, content: `${staticContent}\n${dynamicContent}` });
