@@ -1,12 +1,16 @@
 import { createResolver, defineIntegration } from "astro-integration-kit";
-import { corePlugins } from "astro-integration-kit/plugins";
 import { z } from "astro/zod";
-import { validateEnvPlugin } from "./validate-env.js";
-import { staticEnvPlugin } from "./static-env.js";
-import { dynamicEnvPlugin } from "./dynamic-env.js";
+import { validateEnv } from "./validate-env.js";
+import { staticEnv } from "./static-env.js";
+import { dynamicEnv } from "./dynamic-env.js";
 import { AstroError } from "astro/errors";
 import * as validators from "./validators/index.js";
 import { generateEnvTemplate } from "./generate-env-template.js";
+import {
+	addDts,
+	addVirtualImports,
+	watchIntegration,
+} from "astro-integration-kit/utilities";
 
 export const variablesSchemaReturns = z.record(
 	z.union([
@@ -63,33 +67,25 @@ export type Options = z.infer<typeof optionsSchema>;
 
 export const integration = defineIntegration({
 	name: "astro-env",
-	plugins: [
-		...corePlugins,
-		validateEnvPlugin,
-		staticEnvPlugin,
-		dynamicEnvPlugin,
-	],
 	optionsSchema,
 	setup({ options, name }) {
 		const { resolve } = createResolver(import.meta.url);
 
 		return {
-			"astro:config:setup": ({
-				config,
-				logger,
-				addDts,
-				watchIntegration,
-				validateEnv,
-				staticEnv,
-				dynamicEnv,
-			}) => {
-				watchIntegration(resolve());
-
-				const { variables } = validateEnv(options);
-				const staticContent = staticEnv({
-					name: "env:astro/static",
-					variables,
+			"astro:config:setup": (params) => {
+				const { config, logger } = params;
+				watchIntegration({
+					...params,
+					dir: resolve(),
 				});
+
+				const ids = {
+					static: "env:astro/static",
+					entrypoint: "virtual:astro-env/entrypoint",
+				};
+
+				const { variables } = validateEnv(params, options);
+				const staticData = staticEnv(ids.static, variables);
 				if (options.generateEnvTemplate) {
 					generateEnvTemplate({
 						root: config.root,
@@ -98,9 +94,24 @@ export const integration = defineIntegration({
 					});
 				}
 
-				const dynamicContent = dynamicEnv({ runtime: options.runtime });
+				const dynamicData = dynamicEnv(params, options.runtime);
 
-				addDts({ name, content: `${staticContent}\n${dynamicContent}` });
+				addVirtualImports({
+					...params,
+					name,
+					imports: {
+						[ids.static]: staticData.virtualImport,
+						[ids.entrypoint]: dynamicData.virtualImport,
+					},
+				});
+
+				addDts({
+					root: config.root,
+					srcDir: config.srcDir,
+					logger,
+					name,
+					content: `${staticData.dtsContent}${dynamicData.dtsContent}`,
+				});
 			},
 			"astro:server:setup": ({ server }) => {
 				// TODO: do not kill the terminal, show in the error overlay

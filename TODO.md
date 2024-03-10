@@ -5,6 +5,8 @@
 - [x] testing
 - [x] jsdoc
 - [x] docs update
+- [x] aik upgrade
+- [ ] lint
 - [ ] changeset (+ migration)
 - [ ] pr desc
 - [ ] remove todo

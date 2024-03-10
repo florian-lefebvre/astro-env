@@ -1,9 +1,6 @@
 import type { HookParameters } from "astro";
-import { createResolver, definePlugin } from "astro-integration-kit";
-import {
-	addVirtualImport,
-	hasIntegration,
-} from "astro-integration-kit/utilities";
+import { createResolver } from "astro-integration-kit";
+import { hasIntegration } from "astro-integration-kit/utilities";
 import { readFileSync } from "node:fs";
 import type { Options } from "./integration.js";
 
@@ -30,35 +27,24 @@ const getRuntime = (
 	return "node";
 };
 
-export const dynamicEnvPlugin = definePlugin({
-	name: "dynamicEnv",
-	hook: "astro:config:setup",
-	implementation:
-		({ config, updateConfig, addMiddleware }) =>
-		({ runtime: providedRuntime }: { runtime?: Runtime }) => {
-			const { resolve } = createResolver(import.meta.url);
+export const dynamicEnv = (
+	{ config, addMiddleware }: HookParameters<"astro:config:setup">,
+	providedRuntime?: Runtime
+) => {
+	const { resolve } = createResolver(import.meta.url);
 
-			const runtime = providedRuntime ?? getRuntime(config);
+	const runtime = providedRuntime ?? getRuntime(config);
 
-			addVirtualImport({
-				updateConfig,
-				name: "virtual:astro-env/entrypoint",
-				content: readFileSync(
-					resolve(`./stubs/dynamic-env/${runtime}.mjs`),
-					"utf-8",
-				),
-			});
+	addMiddleware({
+		entrypoint: resolve("./middleware.ts"),
+		order: "pre",
+	});
 
-			addMiddleware({
-				entrypoint: resolve("./middleware.ts"),
-				order: "pre",
-			});
-
-			const content = readFileSync(
-				resolve("./stubs/dynamic-env/dts.d.ts"),
-				"utf-8",
-			);
-
-			return content;
-		},
-});
+	return {
+		dtsContent: readFileSync(resolve("./stubs/dynamic-env/dts.d.ts"), "utf-8"),
+		virtualImport: readFileSync(
+			resolve(`./stubs/dynamic-env/${runtime}.mjs`),
+			"utf-8",
+		),
+	};
+};
