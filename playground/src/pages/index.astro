@@ -24,6 +24,36 @@ const vars: Array<{ name: string; provided: any; expected: any}> = [
 		provided: env.TEST_BOOLEAN_DEFAULT,
 		expected: false
 	},
+	{
+		name: "TEST_ENUM",
+		provided: env.TEST_ENUM,
+		expected: "a"
+	},
+	{
+		name: "TEST_ENUM_OPTIONAL",
+		provided: env.TEST_ENUM_OPTIONAL,
+		expected: undefined
+	},
+	{
+		name: "TEST_ENUM_DEFAULT",
+		provided: env.TEST_ENUM_DEFAULT,
+		expected: "b"
+	},
+	{
+		name: "TEST_NUMBER",
+		provided: env.TEST_NUMBER,
+		expected: 9
+	},
+	{
+		name: "TEST_NUMBER_OPTIONAL",
+		provided: env.TEST_NUMBER_OPTIONAL,
+		expected: undefined
+	},
+	{
+		name: "TEST_NUMBER_DEFAULT",
+		provided: env.TEST_NUMBER_DEFAULT,
+		expected: 11
+	},
 ]
 
 console.log(vars)

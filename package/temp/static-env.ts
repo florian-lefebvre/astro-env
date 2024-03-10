@@ -45,7 +45,7 @@ export const staticEnvPlugin = definePlugin({
 								return (input) => input;
 							}
 							if (params.type === "number") {
-								return (input) => `Number(${input})`;
+								return (input) => `${input} === undefined ? undefined : Number(${input})`;
 							}
 							if (params.type === "string") {
 								return (input) => input;
