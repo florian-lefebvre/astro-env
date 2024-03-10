@@ -28,6 +28,7 @@ export default defineConfig({
 				TEST_STRING_DEFAULT: fields.string({ optional: true, default: "def" }),
 			}),
 			validationLevel: "error",
+			generateEnvTemplate: true
 		}),
 	],
 	output: "server",

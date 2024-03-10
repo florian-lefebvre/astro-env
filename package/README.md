@@ -50,7 +50,57 @@ export default defineConfig({
 
 ### How to use?
 
-TODO:
+`astro-env` allows to use static and dynamic environment variables in a convenient way.
+
+### Static variables
+
+Those variables needs to be manually registered using `variables` (see "Configuration" below). That will
+check them at build-time and automatically type them. They can be accessed through the `env:astro/static` import.
+
+```ts
+// astro.config.mjs
+import { defineConfig } from "astro/config";
+import env from "astro-env";
+
+export default defineConfig({
+	integrations: [
+		env({
+			variables: (fields) => ({
+				MODE: fields.enum({
+					values: ["dev", "prod"],
+					optional: true,
+					default: "dev"
+				}),
+				PORT: fields.number({
+					gte: 2000,
+					lte: 5000,
+					optional: true,
+					default: 4321
+				}),
+			})
+		})
+	]
+})
+```
+
+```ts
+// src/pages/index.astro
+import { MODE, PORT} from "env:astro/static"
+
+MODE
+// ^? "dev" | "prod"
+PORT
+// ^? number
+```
+
+### Dynamic variables
+
+Those variables can be accessed at runtime (if your host supports it). They can be accessed through `locals`.
+
+```ts
+// src/pages/index.astro
+Astro.locals.env.MY_DYNAMIC_VAR
+```
 
 ### Configuration
 
