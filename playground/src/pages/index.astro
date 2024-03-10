@@ -1,82 +1,82 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
-import * as env from "env:astro/static"
+import * as env from "env:astro/static";
+import Card from "../components/Card.astro";
+import Layout from "../layouts/Layout.astro";
 
-const vars: Array<{ name: string; provided: any; expected: any}> = [
+const vars: Array<{ name: string; provided: any; expected: any }> = [
 	{
 		name: "TEST_BOOLEAN",
 		provided: env.TEST_BOOLEAN,
-		expected: true
+		expected: true,
 	},
 	{
 		name: "TEST_BOOLEAN_TWO",
 		provided: env.TEST_BOOLEAN_TWO,
-		expected: false
+		expected: false,
 	},
 	{
 		name: "TEST_BOOLEAN_OPTIONAL",
 		provided: env.TEST_BOOLEAN_OPTIONAL,
-		expected: undefined
+		expected: undefined,
 	},
 	{
 		name: "TEST_BOOLEAN_DEFAULT",
 		provided: env.TEST_BOOLEAN_DEFAULT,
-		expected: false
+		expected: false,
 	},
 	{
 		name: "TEST_ENUM",
 		provided: env.TEST_ENUM,
-		expected: "a"
+		expected: "a",
 	},
 	{
 		name: "TEST_ENUM_OPTIONAL",
 		provided: env.TEST_ENUM_OPTIONAL,
-		expected: undefined
+		expected: undefined,
 	},
 	{
 		name: "TEST_ENUM_DEFAULT",
 		provided: env.TEST_ENUM_DEFAULT,
-		expected: "b"
+		expected: "b",
 	},
 	{
 		name: "TEST_NUMBER",
 		provided: env.TEST_NUMBER,
-		expected: 9
+		expected: 9,
 	},
 	{
 		name: "TEST_NUMBER_OPTIONAL",
 		provided: env.TEST_NUMBER_OPTIONAL,
-		expected: undefined
+		expected: undefined,
 	},
 	{
 		name: "TEST_NUMBER_DEFAULT",
 		provided: env.TEST_NUMBER_DEFAULT,
-		expected: 11
+		expected: 11,
 	},
 	{
 		name: "TEST_STRING",
 		provided: env.TEST_STRING,
-		expected: "abc"
+		expected: "abc",
 	},
 	{
 		name: "TEST_STRING_OPTIONAL",
 		provided: env.TEST_STRING_OPTIONAL,
-		expected: undefined
+		expected: undefined,
 	},
 	{
 		name: "TEST_STRING_DEFAULT",
 		provided: env.TEST_STRING_DEFAULT,
-		expected: "def"
+		expected: "def",
 	},
 	{
 		name: "TEST_NUMBER",
 		provided: Astro.locals.env.TEST_NUMBER,
-		expected: '9'
+		expected: "9",
 	},
-]
+];
 
-console.log(vars)
+console.log(vars);
 ---
 
 <Layout title="Welcome to Astro.">

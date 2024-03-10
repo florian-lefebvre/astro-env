@@ -1,5 +1,5 @@
 declare namespace App {
 	interface Locals {
-		env: Record<string, string>
+		env: Record<string, string>;
 	}
 }

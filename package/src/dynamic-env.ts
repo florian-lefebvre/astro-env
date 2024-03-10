@@ -1,7 +1,7 @@
+import { readFileSync } from "node:fs";
 import type { HookParameters } from "astro";
 import { createResolver } from "astro-integration-kit";
 import { hasIntegration } from "astro-integration-kit/utilities";
-import { readFileSync } from "node:fs";
 import type { Options } from "./integration.js";
 
 type Runtime = Required<Options>["runtime"];
@@ -29,7 +29,7 @@ const getRuntime = (
 
 export const dynamicEnv = (
 	{ config, addMiddleware }: HookParameters<"astro:config:setup">,
-	providedRuntime?: Runtime
+	providedRuntime?: Runtime,
 ) => {
 	const { resolve } = createResolver(import.meta.url);
 

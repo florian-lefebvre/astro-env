@@ -18,8 +18,15 @@ export default defineConfig({
 					default: false,
 				}),
 				TEST_ENUM: fields.enum({ values: ["a", "b", "c"] }),
-				TEST_ENUM_OPTIONAL: fields.enum({ values: ["a", "b", "c"], optional: true }),
-				TEST_ENUM_DEFAULT: fields.enum({ values: ["a", "b", "c"], optional: true, default: "b" }),
+				TEST_ENUM_OPTIONAL: fields.enum({
+					values: ["a", "b", "c"],
+					optional: true,
+				}),
+				TEST_ENUM_DEFAULT: fields.enum({
+					values: ["a", "b", "c"],
+					optional: true,
+					default: "b",
+				}),
 				TEST_NUMBER: fields.number(),
 				TEST_NUMBER_OPTIONAL: fields.number({ optional: true }),
 				TEST_NUMBER_DEFAULT: fields.number({ optional: true, default: 11 }),
@@ -28,7 +35,7 @@ export default defineConfig({
 				TEST_STRING_DEFAULT: fields.string({ optional: true, default: "def" }),
 			}),
 			validationLevel: "error",
-			generateEnvTemplate: true
+			generateEnvTemplate: true,
 		}),
 	],
 	output: "server",

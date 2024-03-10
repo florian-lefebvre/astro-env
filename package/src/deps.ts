@@ -1,1 +1,1 @@
-export { loadEnv } from "vite"
+export { loadEnv } from "vite";

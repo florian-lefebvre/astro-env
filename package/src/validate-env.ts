@@ -1,8 +1,8 @@
+import type { HookParameters } from "astro";
+import type { z } from "astro/zod";
 import { loadEnv } from "vite";
 import type { Options } from "./integration.js";
 import * as validators from "./validators/index.js";
-import type { z } from "astro/zod";
-import type { HookParameters } from "astro";
 
 export const validateEnv = (
 	{ command, logger }: HookParameters<"astro:config:setup">,

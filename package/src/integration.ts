@@ -1,16 +1,16 @@
 import { createResolver, defineIntegration } from "astro-integration-kit";
-import { z } from "astro/zod";
-import { validateEnv } from "./validate-env.js";
-import { staticEnv } from "./static-env.js";
-import { dynamicEnv } from "./dynamic-env.js";
-import { AstroError } from "astro/errors";
-import * as validators from "./validators/index.js";
-import { generateEnvTemplate } from "./generate-env-template.js";
 import {
 	addDts,
 	addVirtualImports,
 	watchIntegration,
 } from "astro-integration-kit/utilities";
+import { AstroError } from "astro/errors";
+import { z } from "astro/zod";
+import { dynamicEnv } from "./dynamic-env.js";
+import { generateEnvTemplate } from "./generate-env-template.js";
+import { staticEnv } from "./static-env.js";
+import { validateEnv } from "./validate-env.js";
+import * as validators from "./validators/index.js";
 
 export const variablesSchemaReturns = z.record(
 	z.union([
