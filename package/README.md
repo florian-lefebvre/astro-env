@@ -85,7 +85,7 @@ export default defineConfig({
 
 ```ts
 // src/pages/index.astro
-import { MODE, PORT} from "env:astro/static"
+import { MODE, PORT } from "env:astro/static"
 
 MODE
 // ^? "dev" | "prod"
