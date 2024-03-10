@@ -21,7 +21,7 @@ export const staticEnvPlugin = definePlugin({
 						const variableDefault = (() => {
 							if (params.options.default !== undefined) {
 								if (params.type === "boolean") {
-									return JSON.stringify(params.options.default);
+									return params.options.default ? '"true"' : '"false"';
 								}
 								if (params.type === "enum") {
 									return `"${params.options.default}"`;
@@ -36,7 +36,26 @@ export const staticEnvPlugin = definePlugin({
 							}
 							return "undefined";
 						})();
-						content += `export const ${key} = import.meta.env["${key}"] ?? ${variableDefault};`;
+						const transformer = (() => {
+							if (params.type === "boolean") {
+								return (input) =>
+									`${input} === "true" ? true : ${input} === "false" ? false : undefined`;
+							}
+							if (params.type === "enum") {
+								return (input) => input;
+							}
+							if (params.type === "number") {
+								return (input) => `Number(${input})`;
+							}
+							if (params.type === "string") {
+								return (input) => input;
+							}
+							params satisfies never;
+							throw new Error("Should never reach this");
+						})() satisfies (input: string) => string;
+						content += `export const ${key} = ${transformer(
+							`(import.meta.env["${key}"] ?? ${variableDefault})`,
+						)};\n`;
 					}
 					return content;
 				})(),

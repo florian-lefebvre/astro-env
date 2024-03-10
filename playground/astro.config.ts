@@ -10,13 +10,12 @@ export default defineConfig({
 		tailwind(),
 		env({
 			variables: (fields) => ({
-				ABC: fields.string(),
-				DEF: fields.number({
-					optional: true,
-					default: 5,
-				}),
+				TEST_BOOLEAN: fields.boolean(),
+				TEST_BOOLEAN_TWO: fields.boolean(),
+				TEST_BOOLEAN_OPTIONAL: fields.boolean({ optional: true }),
+				TEST_BOOLEAN_DEFAULT: fields.boolean({ optional: true, default: false }),
 			}),
-			validationLevel: "warn",
+			validationLevel: "error",
 		}),
 	],
 	output: "server",

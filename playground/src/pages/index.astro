@@ -1,10 +1,35 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
-import { ABC } from "env:astro/static"
+import * as env from "env:astro/static"
 
-console.log({ ABC })
-console.log(Astro.locals.env.ABC)
+const vars: Array<{ name: string; provided: any; expected: any}> = [
+	{
+		name: "TEST_BOOLEAN",
+		provided: env.TEST_BOOLEAN,
+		expected: true
+	},
+	{
+		name: "TEST_BOOLEAN_TWO",
+		provided: env.TEST_BOOLEAN_TWO,
+		expected: false
+	},
+	{
+		name: "TEST_BOOLEAN_OPTIONAL",
+		provided: env.TEST_BOOLEAN_OPTIONAL,
+		expected: undefined
+	},
+	{
+		name: "TEST_BOOLEAN_DEFAULT",
+		provided: env.TEST_BOOLEAN_DEFAULT,
+		expected: false
+	},
+]
+
+console.log(vars)
+
+// console.log({ ABC })
+// console.log(Astro.locals.env.ABC)
 ---
 
 <Layout title="Welcome to Astro.">
