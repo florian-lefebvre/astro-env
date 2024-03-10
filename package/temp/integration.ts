@@ -5,10 +5,32 @@ import { validateEnvPlugin } from "./validate-env.js";
 import { staticEnvPlugin } from "./static-env.js";
 import { dynamicEnvPlugin } from "./dynamic-env.js";
 import { AstroError } from "astro/errors";
+import * as validators from "./validators/index.js";
+
+export const variablesSchemaReturns = z.record(
+	z.union([
+		validators.booleanFnReturns,
+		validators.enumFnReturns,
+		validators.numberFnReturns,
+		validators.stringFnReturns,
+	]),
+);
+
+const variablesSchema = z
+	.function()
+	.args(
+		z.object({
+			boolean: validators.booleanFnPublicSchema,
+			enum: validators.enumFnPublicSchema,
+			number: validators.numberFnPublicSchema,
+			string: validators.stringFnPublicSchema,
+		}),
+	)
+	.returns(variablesSchemaReturns);
 
 const optionsSchema = z.object({
 	/** TODO: */
-	variables: z.array(z.string()),
+	variables: variablesSchema,
 	/** TODO: */
 	validationLevel: z.enum(["warn", "error"]).optional().default("warn"),
 	/** TODO: */
@@ -39,10 +61,10 @@ export const integration = defineIntegration({
 			}) => {
 				watchIntegration(resolve());
 
-				validateEnv(options);
+				const { variables } = validateEnv(options);
 				const staticContent = staticEnv({
 					name: "env:astro/static",
-					variables: options.variables,
+					variables,
 				});
 				const dynamicContent = dynamicEnv({ runtime: options.runtime });
 

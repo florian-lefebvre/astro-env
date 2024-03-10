@@ -31,6 +31,11 @@ export const stringFnSchema = z
 	.args(stringFnArgs)
 	.returns(stringFnReturns);
 
+export const stringFnPublicSchema =
+	z.custom<
+		(params?: z.infer<typeof stringFnArgs>) => z.infer<typeof stringFnReturns>
+	>();
+
 export const stringFn = stringFnSchema.implement((options) => {
 	let schema: any = z.string();
 	if (options.max) {

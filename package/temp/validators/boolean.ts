@@ -19,6 +19,11 @@ export const booleanFnSchema = z
 	.args(booleanFnArgs)
 	.returns(booleanFnReturns);
 
+export const booleanFnPublicSchema =
+	z.custom<
+		(params?: z.infer<typeof booleanFnArgs>) => z.infer<typeof booleanFnReturns>
+	>();
+
 export const booleanFn = booleanFnSchema.implement((options) => {
 	let schema: any = z.string();
 

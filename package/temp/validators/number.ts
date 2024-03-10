@@ -24,6 +24,11 @@ export const numberFnSchema = z
 	.args(numberFnArgs)
 	.returns(numberFnReturns);
 
+export const numberFnPublicSchema =
+	z.custom<
+		(params?: z.infer<typeof numberFnArgs>) => z.infer<typeof numberFnReturns>
+	>();
+
 export const numberFn = numberFnSchema.implement((options) => {
 	let schema: any = z.coerce.number();
 

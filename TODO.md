@@ -1,11 +1,7 @@
 - [x] env validation
 - [x] `env:astro/static`
 - [x] dynamic variables using `Astro.locals.env`
-- [ ] Schema for `variables`
-  - [ ] string
-  - [ ] number
-  - [ ] boolean
-  - [ ] enum
+- [x] Schema for `variables`
 - [ ] testing
 - [ ] docs update
 

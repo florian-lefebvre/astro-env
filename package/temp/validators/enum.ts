@@ -26,6 +26,8 @@ export const enumFnSchema = z
 	.args(enumFnArgs)
 	.returns(enumFnReturns);
 
+export const enumFnPublicSchema = enumFnSchema;
+
 export const enumFn = enumFnSchema.implement((options) => {
 	let schema: any = z.enum(options.values as any);
 
