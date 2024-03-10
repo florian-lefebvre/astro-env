@@ -20,8 +20,8 @@
   },
   "sideEffects": false,
   "exports": {
-    ".": "./temp/index.ts",
-    "./deps": "./temp/deps.ts"
+    ".": "./src/index.ts",
+    "./deps": "./src/deps.ts"
   },
   "scripts": {},
   "type": "module",

@@ -69,12 +69,14 @@ const vars: Array<{ name: string; provided: any; expected: any}> = [
 		provided: env.TEST_STRING_DEFAULT,
 		expected: "def"
 	},
+	{
+		name: "TEST_NUMBER",
+		provided: Astro.locals.env.TEST_NUMBER,
+		expected: '9'
+	},
 ]
 
 console.log(vars)
-
-// console.log({ ABC })
-// console.log(Astro.locals.env.ABC)
 ---
 
 <Layout title="Welcome to Astro.">
