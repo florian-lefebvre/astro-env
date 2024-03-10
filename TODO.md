@@ -2,7 +2,7 @@
 - [x] `env:astro/static`
 - [x] dynamic variables using `Astro.locals.env`
 - [x] Schema for `variables`
-- [ ] testing
+- [x] testing
 - [ ] docs update
 
 Example usage

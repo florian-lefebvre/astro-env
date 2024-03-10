@@ -54,6 +54,21 @@ const vars: Array<{ name: string; provided: any; expected: any}> = [
 		provided: env.TEST_NUMBER_DEFAULT,
 		expected: 11
 	},
+	{
+		name: "TEST_STRING",
+		provided: env.TEST_STRING,
+		expected: "abc"
+	},
+	{
+		name: "TEST_STRING_OPTIONAL",
+		provided: env.TEST_STRING_OPTIONAL,
+		expected: undefined
+	},
+	{
+		name: "TEST_STRING_DEFAULT",
+		provided: env.TEST_STRING_DEFAULT,
+		expected: "def"
+	},
 ]
 
 console.log(vars)
