@@ -13,7 +13,7 @@ pnpm astro add astro-env
 ```
 
 ```bash
-npm astro add astro-env
+npx astro add astro-env
 ```
 
 ```bash
@@ -39,11 +39,11 @@ yarn add astro-env
 2. Add the integration to your astro config
 
 ```diff
-+import astroEnv from "astro-env";
++import env from "astro-env";
 
 export default defineConfig({
   integrations: [
-+    astroEnv({ ... }),
++    env({ ... }),
   ],
 });
 ```

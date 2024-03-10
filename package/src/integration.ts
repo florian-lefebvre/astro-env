@@ -29,11 +29,25 @@ const variablesSchema = z
 	.returns(variablesSchemaReturns);
 
 const optionsSchema = z.object({
-	/** TODO: */
+	/**
+	 * @description Allows you to define a schema to validate your environment variables
+	 * at runtime. Types will be inferred based on those.
+	 */
 	variables: variablesSchema,
-	/** TODO: */
+	/**
+	 * @description Specifies if running the app (not matter the mode) should warn or
+	 * fail if provided variables are invalid.
+	 * 
+	 * @default `"warn"`
+	 */
 	validationLevel: z.enum(["warn", "error"]).optional().default("warn"),
-	/** TODO: */
+	/**
+	 * @description Changes how dynamic environment varriables are retrieved at runtime.
+	 * The value depends on the adapter being used but fallback to node. You can override
+	 * it if you're using another runtime without its corresponding adapter.
+	 * 
+	 * @default `"node"`
+	 */
 	runtime: z.enum(["node", "deno", "cloudflare", "bun"]).optional(),
 });
 
