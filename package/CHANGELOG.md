@@ -1,5 +1,11 @@
 # astro-env
 
+## 0.0.6
+
+### Patch Changes
+
+- 9fc5b15: Deprecates the package. Astro 4.10 now has `astro:env` in experimental: https://astro.build/blog/astro-4100/
+
 ## 0.0.5
 
 ### Patch Changes

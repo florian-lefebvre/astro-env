@@ -1,6 +1,6 @@
 {
   "name": "astro-env",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Validate and type your environment variables automatically using zod",
   "author": {
     "email": "contact@florian-lefebvre.dev",
